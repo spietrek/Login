@@ -90,21 +90,7 @@ class CreatePasscodeViewController: UIViewController, UITextFieldDelegate {
     }
     
     func passcodeDidChange(textField: UITextField) {
-        
-        
-        
-        
-        if (passcode1TextField.text == "") {
-            passcode2TextField.hidden = true
-            passcode2TextField.text = ""
-            submitView.hidden = true
-        } else if passcode1TextField.text!.characters.count == 4 {
-            self.passcodesNotMatchLabel.hidden = false
-            passcode2TextField.hidden = false
-        }
-        
-        
-        
+        submitView.hidden = true        
 
         if passcode1TextField.text == passcode2TextField.text {
             self.submitView.hidden = false
