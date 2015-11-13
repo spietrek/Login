@@ -19,7 +19,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var legalPrivacyButton: UIButton!
     
     @IBAction func submitUserIdPassword(sender: UIButton) {
-        if qidTextField.text != "" && passwordTextField! != "" {
+        if (qidTextField.text != "" && passwordTextField! != "") {
             self.performSegueWithIdentifier("PasscodeCreateSegue", sender: self)
         }
     }
@@ -28,18 +28,18 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view, typically from a nib.
-        submitView.hidden = true
+        self.submitView.hidden = true
         let borderColor : UIColor = UIColor( red: 0, green: 0.639, blue: 0.878, alpha: 1.0 )
-        qidTextField.layer.borderWidth = 1
-        qidTextField.layer.borderColor = borderColor.CGColor
-        passwordTextField.layer.borderWidth = 1
-        passwordTextField.layer.borderColor = borderColor.CGColor
-        banner.title = "ASV"
+        self.qidTextField.layer.borderWidth = 1
+        self.qidTextField.layer.borderColor = borderColor.CGColor
+        self.passwordTextField.layer.borderWidth = 1
+        self.passwordTextField.layer.borderColor = borderColor.CGColor
+        self.banner.title = "ASV"
         self.navigationController?.navigationBarHidden = true
     }
     
     override func viewDidAppear(animated: Bool) {
-        registerForKeyboardNotification()
+        self.registerForKeyboardNotification()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -68,19 +68,29 @@ class LoginViewController: UIViewController {
         let kbSize = (info[UIKeyboardFrameBeginUserInfoKey])!.CGRectValue.size
         
         UIView.animateWithDuration(0.2, animations: {
-            self.banner.collapse()
-            self.bannerConstraintHeight.constant = 50
-            self.submitView.hidden = false
-            self.submitViewConstraintBottom.constant = kbSize.height
+            if (self.bannerConstraintHeight.constant == 195) {
+                self.bannerConstraintHeight.constant = 195
+                self.submitView.alpha = 0
+                self.submitView.hidden = false
+                self.submitViewConstraintBottom.constant = kbSize.height
+            }
+            }, completion: {
+                (value: Bool) in
+                self.bannerConstraintHeight.constant = 50
+                self.submitView.alpha = 1
+                self.banner.collapse()
             }
         )
     }
     
     func keyboardWillBeHidden(aNotification: NSNotification) {
         UIView.animateWithDuration(0.2, animations: {
-            self.bannerConstraintHeight.constant = 195
-            self.banner.expand()
+            self.bannerConstraintHeight.constant = 50
             self.submitView.hidden = true
+            }, completion: {
+                (value: Bool) in
+                self.bannerConstraintHeight.constant = 195
+                self.banner.expand()
             }
         )
     }

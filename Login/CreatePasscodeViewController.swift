@@ -26,24 +26,23 @@ class CreatePasscodeViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        submitView.hidden = true
-        passcodesNotMatchLabel.hidden = true
-        passcode2TextField.hidden = true
+        self.submitView.hidden = true
+        self.passcodesNotMatchLabel.hidden = true
+        self.passcode2TextField.hidden = true
         let borderColor : UIColor = UIColor( red: 0, green: 0.639, blue: 0.878, alpha: 1.0 )
-        passcode1TextField.layer.borderWidth = 1
-        passcode1TextField.layer.borderColor = borderColor.CGColor
-        passcode2TextField.layer.borderWidth = 1
-        passcode2TextField.layer.borderColor = borderColor.CGColor
-        banner.title = "ASV"
-        
-        passcode1TextField.delegate = self
-        passcode1TextField.addTarget(self, action: "passcodeDidChange:", forControlEvents: UIControlEvents.EditingChanged)
-        passcode2TextField.delegate = self
-        passcode2TextField.addTarget(self, action: "passcodeDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+        self.passcode1TextField.layer.borderWidth = 1
+        self.passcode1TextField.layer.borderColor = borderColor.CGColor
+        self.passcode2TextField.layer.borderWidth = 1
+        self.passcode2TextField.layer.borderColor = borderColor.CGColor
+        self.banner.title = "ASV"
+        self.passcode1TextField.delegate = self
+        self.passcode1TextField.addTarget(self, action: "passcodeDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+        self.passcode2TextField.delegate = self
+        self.passcode2TextField.addTarget(self, action: "passcodeDidChange:", forControlEvents: UIControlEvents.EditingChanged)
     }
 
     override func viewDidAppear(animated: Bool) {
-        registerForKeyboardNotification()
+        self.registerForKeyboardNotification()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -73,8 +72,11 @@ class CreatePasscodeViewController: UIViewController, UITextFieldDelegate {
         
         UIView.animateWithDuration(0.2, animations: {
             self.banner.collapse()
-            self.bannerConstraintHeight.constant = 50
+            self.bannerConstraintHeight.constant = 195
             self.submitViewConstraintBottom.constant = kbSize.height
+            }, completion: {
+                (value: Bool) in
+                self.bannerConstraintHeight.constant = 50
             }
         )
     }
@@ -88,7 +90,21 @@ class CreatePasscodeViewController: UIViewController, UITextFieldDelegate {
     }
     
     func passcodeDidChange(textField: UITextField) {
-        self.submitView.hidden = true
+        
+        
+        
+        
+        if (passcode1TextField.text == "") {
+            passcode2TextField.hidden = true
+            passcode2TextField.text = ""
+            submitView.hidden = true
+        } else if passcode1TextField.text!.characters.count == 4 {
+            self.passcodesNotMatchLabel.hidden = false
+            passcode2TextField.hidden = false
+        }
+        
+        
+        
 
         if passcode1TextField.text == passcode2TextField.text {
             self.submitView.hidden = false
@@ -130,3 +146,6 @@ extension UITextField {
         }
     }
 }
+
+
+
